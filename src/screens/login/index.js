@@ -7,13 +7,12 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-
 import {connect} from 'react-redux';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import styles from './styles';
-
 import logo from '../../assets/bg.jpg';
-
 import {modifyEmail, modifyPassword} from '../../store/actions/user';
 
 const Login = ({
@@ -22,6 +21,14 @@ const Login = ({
   modifyEmail,
   modifyPassword
 }) => {
+
+  function handleSubmit(){
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((user)=> {
+        alert("LOGADO");
+      })
+      .catch((err) => alert(err.code))
+  }
 
   return (
     <>
@@ -51,7 +58,7 @@ const Login = ({
             <Text style={styles.txtNewButton}>Clique aqui!</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => alert(email+" - "+password)} style={styles.button} activeOpacity={.7}>
+        <TouchableOpacity onPress={() => handleSubmit()} style={styles.button} activeOpacity={.7}>
           <Text style={styles.txtButton}>Entrar</Text>
         </TouchableOpacity>
       </ImageBackground>
