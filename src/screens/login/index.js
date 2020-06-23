@@ -8,11 +8,20 @@ import {
   StatusBar,
 } from 'react-native';
 
+import {connect} from 'react-redux';
+
 import styles from './styles';
 
 import logo from '../../assets/bg.jpg';
 
-const Login = () => {
+import {modifyEmail, modifyPassword} from '../../store/actions/user';
+
+const Login = ({
+  email, 
+  password, 
+  modifyEmail,
+  modifyPassword
+}) => {
 
   return (
     <>
@@ -24,12 +33,17 @@ const Login = () => {
           style={styles.input}
           placeholder="Digite seu e-mail"
           placeholderTextColor={'#CCC'}
+          value={email}
+          onChangeText={value => modifyEmail(value)}
         />
         <Text style={styles.labelForm}>Senha</Text>
         <TextInput 
           style={styles.input}
           placeholder="Digite sua senha"
           placeholderTextColor={'#CCC'}
+          value={password}
+          onChangeText={value => modifyPassword(value)}
+          secureTextEntry
         />
         <View style={styles.boxNew}>
           <Text style={styles.txtNew}>Não tem cadastro?</Text>
@@ -37,12 +51,22 @@ const Login = () => {
             <Text style={styles.txtNewButton}>Clique aqui!</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.button} activeOpacity={.7}>
+        <TouchableOpacity onPress={() => alert(email+" - "+password)} style={styles.button} activeOpacity={.7}>
           <Text style={styles.txtButton}>Entrar</Text>
         </TouchableOpacity>
       </ImageBackground>
     </>
   );
 };
+const mapStateToProps = state => ({
+  email: state.user.email,
+  password: state.user.password
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    modifyEmail: (email) => dispatch(modifyEmail(email)),
+    modifyPassword: (password) => dispatch(modifyPassword(password))
+  }
+}
 
-export default Login;
+export default connect(mapStateToProps,mapDispatchToProps)(Login);
