@@ -17,10 +17,10 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#000',
     fontWeight: 'bold',
+    marginTop: 15
   },
   input: {
     marginTop: 5,
-    marginBottom: 15,
     backgroundColor: '#fff',
     paddingHorizontal: 8,
     paddingVertical: 12,
@@ -44,6 +44,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 10,
+    marginTop: 10,
   },
   txtNew: {
     fontSize: 16,
@@ -55,5 +56,11 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: '#119',
     marginLeft: 5
+  },
+  loginError: {
+    marginTop: 5,
+    color: '#E22',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 });
