@@ -13,17 +13,23 @@ import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase';
 import 'firebase/storage';
+import b64 from 'b64';
 
 import styles from '../styles';
 import localStyle from './localStyle';
-import logo from '../../assets/bg.jpg';
-import {modifyEmail, modifyPassword} from '../../store/actions/user';
+
+import {
+  modifyEmail, 
+  modifyPassword, 
+  modifyName} from '../../store/actions/user';
 
 const New = ({
+  name,
   email,
   password,
+  modifyName,
   modifyEmail,
-  modifyPassword
+  modifyPassword,
 }) => {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState();
@@ -60,7 +66,7 @@ const New = ({
     const typeString = avatar.fileName.split('.');
     const type = typeString[1];
 
-    const nameBase64 = "Udevsdw5654";
+    const nameBase64 = b64.encode(email);
     const imageUpload = storageRef.child(`avatar/${nameBase64}.${type}`);
 
     imageUpload.putString(avatar.data, 'base64').then(function(snapshot) {
@@ -83,10 +89,10 @@ const New = ({
       <Text style={styles.labelForm}>Nome</Text>
       <TextInput 
         style={styles.input}
-        placeholder="Digite seu e-mail"
+        placeholder="Digite seu name"
         placeholderTextColor={'#CCC'}
-        value={email}
-        onChangeText={value => modifyEmail(value)}
+        value={name}
+        onChangeText={value => modifyName(value)}
       />
       <Text style={styles.labelForm}>Email</Text>
       <TextInput 
@@ -127,11 +133,13 @@ const New = ({
 };
 
 const mapStateToProps = state => ({
+  name: state.user.name,
   email: state.user.email,
   password: state.user.password
 });
 
 const mapDispatchToProps = dispatch => ({
+  modifyName: (name) => dispatch(modifyName(name)),
   modifyEmail: (email) => dispatch(modifyEmail(email)),
   modifyPassword: (password) => dispatch(modifyPassword(password)),
 })

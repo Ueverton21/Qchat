@@ -1,4 +1,4 @@
-import {MODIFY_EMAIL, MODIFY_PASSWORD, ERROR_LOGIN, SUCESS_LOGIN} from './types';
+import {MODIFY_EMAIL, MODIFY_PASSWORD, ERROR_LOGIN, SUCESS_LOGIN, MODIFY_NAME} from './types';
 
 export function modifyEmail(email){
   return{
@@ -11,6 +11,13 @@ export function modifyPassword(password){
   return{
     type: MODIFY_PASSWORD,
     payload: password
+  }
+}
+
+export function modifyName(name){
+  return{
+    type: MODIFY_NAME,
+    payload: name
   }
 }
 
