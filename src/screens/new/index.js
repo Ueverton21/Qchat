@@ -9,6 +9,10 @@ import {
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+import { useNavigation } from '@react-navigation/native';
+import firebase from 'firebase';
+import 'firebase/storage';
 
 import styles from '../styles';
 import localStyle from './localStyle';
@@ -22,11 +26,60 @@ const New = ({
   modifyPassword
 }) => {
   const [loading, setLoading] = useState(false);
+  const [avatar, setAvatar] = useState();
+
+  const navigation = useNavigation();
+
+  const imagePickerOptions = {
+    title: 'Selecione uma imagem',
+    takePhotoButtonTitle: 'Tire uma foto',
+    chooseFromLibraryButtonTitle: 'Galeria'
+  };
+
+  function uploadImageCalback(data){
+    console.log(data);
+    if (data.didCancel) {
+      return;
+    }
+    if (data.error) {
+      return;
+    }
+    if (data.customButton) {
+      return;
+    }
+    if (!data.uri) {
+      return;
+    }
+    setAvatar(data);
+  }
+
+  async function handleSubmit(){
+
+    const storageRef = firebase.storage().ref();
+
+    const typeString = avatar.fileName.split('.');
+    const type = typeString[1];
+
+    const nameBase64 = "Udevsdw5654";
+    const imageUpload = storageRef.child(`avatar/${nameBase64}.${type}`);
+
+    imageUpload.putString(avatar.data, 'base64').then(function(snapshot) {
+      console.log('Uploaded a base64 string!');
+    });
+  }
+
   return(
     <ImageBackground style={styles.main} source={logo}>
-      <TouchableOpacity style={localStyle.buttonImage} onPress={() => null}>
-        <Image style={localStyle.imageAvatar} source={'https://mltmpgeox6sf.i.optimole.com/M9I38xY-EO2wV8tf/w:761/h:720/q:auto/https://redbanksmilesnj.com/wp-content/uploads/2015/11/man-avatar-placeholder.png'}/>
+      <TouchableOpacity style={localStyle.buttonImage} onPress={() => ImagePicker.showImagePicker(imagePickerOptions,uploadImageCalback)}>
+        <Image 
+          style={localStyle.imageAvatar} 
+          source={{uri: avatar ? 
+            avatar.uri 
+            : 
+            'https://www.dcrc.co/wp-content/uploads/2019/04/blank-head-profile-pic-for-a-man.jpg'}} 
+        />
       </TouchableOpacity>
+      <Text style={{fontSize: 14,color: '#FFF', fontWeight: 'bold', alignSelf: 'center', marginTop: 5}}>Selecione uma imagem</Text>
       <Text style={styles.labelForm}>Nome</Text>
       <TextInput 
         style={styles.input}
@@ -56,10 +109,10 @@ const New = ({
         !loading ? 
           (
             <>
-              <TouchableOpacity onPress={() =>null} style={[styles.button, {marginTop: 20}]} activeOpacity={.7}>
+              <TouchableOpacity onPress={handleSubmit} style={[styles.button, {marginTop: 20}]} activeOpacity={.7}>
                 <Text style={styles.txtButton}>Entrar</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() =>null} style={[styles.button, {marginTop: 10, backgroundColor: '#333'}]} activeOpacity={.7}>
+              <TouchableOpacity onPress={() =>navigation.goBack()} style={[styles.button, {marginTop: 10, backgroundColor: '#333'}]} activeOpacity={.7}>
                 <Text style={styles.txtButton}>Cancelar</Text>
               </TouchableOpacity>
             </>
@@ -68,8 +121,7 @@ const New = ({
           (
             <ActivityIndicator color={'#228B22'} size={30}/>
           )
-      }
-      
+      }     
     </ImageBackground>
   );
 };
