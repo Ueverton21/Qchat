@@ -13,10 +13,13 @@ import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase';
 import 'firebase/storage';
-import b64 from 'b64';
+import b64 from 'base-64';
 
 import styles from '../styles';
 import localStyle from './localStyle';
+import logo from '../../assets/bg.jpg';
+
+import uploadImage from '../../repository/StoreServices';
 
 import {
   modifyEmail, 
@@ -61,17 +64,13 @@ const New = ({
 
   async function handleSubmit(){
 
-    const storageRef = firebase.storage().ref();
-
     const typeString = avatar.fileName.split('.');
     const type = typeString[1];
 
     const nameBase64 = b64.encode(email);
-    const imageUpload = storageRef.child(`avatar/${nameBase64}.${type}`);
+    const imageUpload = `avatar/${nameBase64}.${type}`;
 
-    imageUpload.putString(avatar.data, 'base64').then(function(snapshot) {
-      console.log('Uploaded a base64 string!');
-    });
+    uploadImage(avatar.uri, imageUpload);
   }
 
   return(
