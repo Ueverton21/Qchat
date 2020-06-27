@@ -37,6 +37,7 @@ const Login = ({
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user=> {
+        alert('Sucesso');
         loginSucess();
       })
       .catch(err => loginError(getError(err.code)))

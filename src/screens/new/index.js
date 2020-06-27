@@ -11,8 +11,8 @@ import {
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
-import firebase from 'firebase';
-import 'firebase/storage';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import b64 from 'base-64';
 
 import styles from '../styles';
@@ -63,14 +63,22 @@ const New = ({
   }
 
   async function handleSubmit(){
-
-    const typeString = avatar.fileName.split('.');
-    const type = typeString[1];
-
-    const nameBase64 = b64.encode(email);
-    const imageUpload = `avatar/${nameBase64}.${type}`;
-
-    uploadImage(avatar.uri, imageUpload);
+    
+    if(!email || !password || !name){
+      alert("Preencha todos os campos");
+    }
+    else{
+      setLoading(true);
+      
+      firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then(user => {
+          const email64 = b64.encode(email);
+          uploadImage(avatar.uri, email64);
+          alert("Conta criada com sucesso");
+        })
+        .catch(err => alert(err.code))
+        .finally(() => setLoading(false));
+    }
   }
 
   return(
@@ -115,7 +123,7 @@ const New = ({
           (
             <>
               <TouchableOpacity onPress={handleSubmit} style={[styles.button, {marginTop: 20}]} activeOpacity={.7}>
-                <Text style={styles.txtButton}>Entrar</Text>
+                <Text style={styles.txtButton}>Confirmar</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() =>navigation.goBack()} style={[styles.button, {marginTop: 10, backgroundColor: '#333'}]} activeOpacity={.7}>
                 <Text style={styles.txtButton}>Cancelar</Text>
