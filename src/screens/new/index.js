@@ -26,6 +26,8 @@ import {
   modifyPassword, 
   modifyName} from '../../store/actions/user';
 
+import getError from '../../utils/firebaseErroAuth';
+
 const New = ({
   name,
   email,
@@ -36,6 +38,7 @@ const New = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState();
+  const [error, setError] = useState('');
 
   const navigation = useNavigation();
 
@@ -73,16 +76,17 @@ const New = ({
       firebase.auth().createUserWithEmailAndPassword(email,password)
         .then(user => {
           const email64 = b64.encode(email);
-          uploadImage(avatar.uri, email64);
-          alert("Conta criada com sucesso");
+          if(avatar){
+            uploadImage(avatar.uri, email64);
+          }
         })
-        .catch(err => alert(err.code))
+        .catch(err =>setError(getError(err.code)))
         .finally(() => setLoading(false));
     }
   }
 
   return(
-    <ImageBackground style={styles.main} source={logo}>
+    <ImageBackground style={[styles.main, {justifyContent: 'flex-start'}]} source={logo}>
       <TouchableOpacity style={localStyle.buttonImage} onPress={() => ImagePicker.showImagePicker(imagePickerOptions,uploadImageCalback)}>
         <Image 
           style={localStyle.imageAvatar} 
@@ -119,10 +123,16 @@ const New = ({
         secureTextEntry
       />
       {
+        error ?
+          <Text style={styles.errorForm}>* {error}</Text>
+        :
+        null
+      }
+      {
         !loading ? 
           (
             <>
-              <TouchableOpacity onPress={handleSubmit} style={[styles.button, {marginTop: 20}]} activeOpacity={.7}>
+              <TouchableOpacity onPress={handleSubmit} style={[styles.button, {marginTop: 10}]} activeOpacity={.7}>
                 <Text style={styles.txtButton}>Confirmar</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() =>navigation.goBack()} style={[styles.button, {marginTop: 10, backgroundColor: '#333'}]} activeOpacity={.7}>
@@ -132,7 +142,7 @@ const New = ({
           )
           :
           (
-            <ActivityIndicator color={'#228B22'} size={30}/>
+            <ActivityIndicator style={{marginTop: 10}} color={'#228B22'} size={30}/>
           )
       }     
     </ImageBackground>
