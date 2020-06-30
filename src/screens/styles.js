@@ -57,7 +57,7 @@ export default StyleSheet.create({
     color: '#119',
     marginLeft: 5
   },
-  loginError: {
+  errorForm: {
     marginTop: 5,
     color: '#E22',
     fontSize: 16,

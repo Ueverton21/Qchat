@@ -6,6 +6,7 @@ const Stack = createStackNavigator();
 
 import Login from './screens/login';
 import New from './screens/new';
+import Home from './screens/home';
 
 export default function Routes() {
   return (
@@ -13,6 +14,7 @@ export default function Routes() {
       <Stack.Navigator>
         <Stack.Screen component={Login} name='Login' options={{header: () => null}}/>
         <Stack.Screen component={New} name='New' options={{header: () => null}}/>
+        <Stack.Screen component={Home} name='Home' options={{header: () => null}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

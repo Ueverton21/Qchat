@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {
   ImageBackground,
   View,
@@ -28,9 +28,20 @@ const Login = ({
   loginError,
   loginSucess
 }) => {
-  
+
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+        navigation.navigate('Home');
+      }
+      else{
+        alert("Não logado")
+      }
+    })
+  },[])
 
   function handleSubmit(){
     setLoading(true);
@@ -68,7 +79,7 @@ const Login = ({
         />
         {
           errorLogin ? 
-            <Text style={styles.loginError}>* {errorLogin}</Text>
+            <Text style={styles.errorForm}>* {errorLogin}</Text>
           :
             null
         }
