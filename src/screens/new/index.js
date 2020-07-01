@@ -79,6 +79,7 @@ const New = ({
           if(avatar){
             uploadImage(avatar.uri, email64);
           }
+          loginSucess();
         })
         .catch(err =>setError(getError(err.code)))
         .finally(() => setLoading(false));

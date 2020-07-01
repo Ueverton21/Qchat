@@ -1,4 +1,14 @@
-import {MODIFY_EMAIL, MODIFY_PASSWORD, ERROR_LOGIN, SUCESS_LOGIN, MODIFY_NAME} from './types';
+import {
+  MODIFY_EMAIL, 
+  MODIFY_PASSWORD, 
+  ERROR_LOGIN, 
+  SUCESS_LOGIN, 
+  MODIFY_NAME,
+  LOGOUT
+} from './types';
+
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export function modifyEmail(email){
   return{
@@ -32,5 +42,13 @@ export function loginSucess(){
   return{
     type: SUCESS_LOGIN,
     payload: ''
+  }
+}
+
+export function logout(){
+  
+  return dispatch => {
+    firebase.auth().signOut();
+    dispatch({type: LOGOUT});
   }
 }

@@ -35,6 +35,7 @@ const Login = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
+        loginSucess();
         navigation.navigate('Home');
       }
       else{
@@ -48,7 +49,6 @@ const Login = ({
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user=> {
-        alert('Sucesso');
         loginSucess();
       })
       .catch(err => loginError(getError(err.code)))

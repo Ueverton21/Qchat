@@ -1,15 +1,41 @@
 import React from 'react';
 import { 
   View, 
-  Text 
+  Text,
+  TouchableHighlight 
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = () => {
+import { logout } from '../../store/actions/user';
+import { connect } from 'react-redux';
+
+const Home = ({
+  logout,
+  isSigned
+}) => {
+  
+  const navigation = useNavigation();
+
+  function handleLogout(){
+    logout();
+  }
+
   return (
     <View>
       <Text>HOME</Text>
+      <TouchableHighlight onPress={handleLogout}>
+        <Text>SAIR</Text>
+      </TouchableHighlight>
     </View>
   );
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  isSigned: state.user.isSigned
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

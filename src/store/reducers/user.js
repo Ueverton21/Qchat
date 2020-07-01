@@ -3,10 +3,12 @@ import {
   MODIFY_PASSWORD, 
   ERROR_LOGIN, 
   SUCESS_LOGIN,
-  MODIFY_NAME
+  MODIFY_NAME,
+  LOGOUT
 } from '../actions/types';
 
 const INITIAL_STATE = {
+  isSigned: false,
   name: '',
   email: '',
   password: '',
@@ -23,8 +25,14 @@ export default function user(state = INITIAL_STATE, action){
   else if(action.type === MODIFY_NAME){
     return {...state, name: action.payload}
   }
-  else if(action.type === ERROR_LOGIN || action.type === SUCESS_LOGIN){
+  else if(action.type === ERROR_LOGIN){
     return {...state, errorLogin: action.payload}
+  }
+  else if(action.type === SUCESS_LOGIN){
+    return {...state, errorLogin: action.payload, isSigned: true}
+  }
+  else if(action.type === LOGOUT){
+    return {...state, isSigned: false}
   }
   return state;
 }
