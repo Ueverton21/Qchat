@@ -2,14 +2,18 @@ import React from 'react';
 import { 
   View, 
   Text,
-  TouchableHighlight 
+  TouchableHighlight,
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Feather';
 
 import { logout } from '../../store/actions/user';
-import { connect } from 'react-redux';
-
 import HeaderHome from '../../components/HeaderHome';
+import Conversa from '../../components/Conversa';
+import styles from './styles';
 
 const Home = ({
   logout,
@@ -23,12 +27,26 @@ const Home = ({
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <HeaderHome />
-      <Text>HOME</Text>
-      <TouchableHighlight onPress={handleLogout}>
-        <Text>SAIR</Text>
-      </TouchableHighlight>
+      <ScrollView>
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <Conversa />
+        <TouchableHighlight onPress={handleLogout}>
+          <Text>SAIR</Text>
+        </TouchableHighlight>
+      </ScrollView>
+      
+      <TouchableOpacity style={styles.btnNovaConversa}>
+        <Icon name={'message-circle'} size={30}/>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -77,14 +77,17 @@ const New = ({
       setLoading(true);
       
       firebase.auth().createUserWithEmailAndPassword(email,password)
-        .then(user => {
+        .then(async user => {
           const email64 = b64.encode(email);
-          firebase.database().ref(`users/${email64}`).set({
+          await firebase.database().ref(`users/${email64}`).set({
             name: name,
             descricao: ''
-          }).then(()=>{});
+          });
           if(avatar){
-            uploadImage(avatar.uri, email64);
+            const imageURL = await uploadImage(avatar.uri, email64);
+            await firebase.database().ref(`users/${email64}`).update({
+              avatar: imageURL
+            });
           }
           loginSucess();
         })

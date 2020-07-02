@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { 
   View,
   Text,
@@ -7,20 +7,40 @@ import {
   Image,
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+import base64 from 'base-64';
 
-const HeaderHome = () => {
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+const HeaderHome = ({
+  email
+}) => {
+
+  const [avatar,setAvatar] = useState('');
+
+  useEffect(() => {
+    async function getAvatar(){
+      const emailb64 = base64.encode(email);
+      firebase.database().ref(`users/${emailb64}`).once('value').then(snapshot => {
+        setAvatar(snapshot.val().avatar);
+      })
+    }
+    getAvatar();
+  },[]) 
+
   return (
     <View style={styles.main}>
       <Text style={styles.title}>CONVERSAS</Text>
       <TouchableOpacity style={styles.btnPerfil}>
         <Image 
           style={styles.imgPerfil}
-          source={{uri: 'https://www.dcrc.co/wp-content/uploads/2019/04/blank-head-profile-pic-for-a-man.jpg'}}
+          source={{uri: avatar ? 
+            avatar
+            :
+            'https://www.dcrc.co/wp-content/uploads/2019/04/blank-head-profile-pic-for-a-man.jpg'
+          }}
         />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnNovaConversa}>
-        <Icon name="comment-dots" size={20}/>
       </TouchableOpacity>
     </View>
   );
@@ -28,8 +48,8 @@ const HeaderHome = () => {
 
 const styles = new StyleSheet.create({
   main: {
-    height: 46,
-    backgroundColor: '#131B23',
+    height: 60,
+    backgroundColor: '#133B23',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingLeft: 20,
@@ -38,28 +58,28 @@ const styles = new StyleSheet.create({
   },
   title: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
+  },
+  contentRight: {
+    flexDirection: 'row'
   },
   btnPerfil: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 26,
-    width: 26,
-    borderRadius: 13,
-    backgroundColor: '#951'
+    height: 40,
+    width: 40,
+    borderRadius: 20,
   },
   imgPerfil: {
-    height: 24,
-    width: 24,
-    borderRadius: 12
+    height: 40,
+    width: 40,
+    borderRadius: 20
   },
-  btnNovaConversa: {
-    height: 28,
-    width: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
 })
 
-export default HeaderHome;
+const mapStateToProps = state => ({
+  email: state.user.email
+})
+
+export default connect(mapStateToProps, null)(HeaderHome);
