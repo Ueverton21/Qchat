@@ -38,9 +38,6 @@ const Login = ({
         loginSucess();
         navigation.navigate('Home');
       }
-      else{
-        alert("Não logado")
-      }
     })
   },[])
 

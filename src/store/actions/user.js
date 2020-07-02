@@ -39,16 +39,15 @@ export function loginError(erro){
 }
 
 export function loginSucess(){
-  return{
-    type: SUCESS_LOGIN,
+  return{ 
+    type: SUCESS_LOGIN, 
     payload: ''
   }
 }
 
 export function logout(){
   
-  return dispatch => {
-    firebase.auth().signOut();
-    dispatch({type: LOGOUT});
-  }
+  firebase.auth().signOut();
+  return {type: LOGOUT};
+  
 }

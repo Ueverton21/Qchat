@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import { logout } from '../../store/actions/user';
 import { connect } from 'react-redux';
 
+import HeaderHome from '../../components/HeaderHome';
+
 const Home = ({
   logout,
   isSigned
@@ -22,6 +24,7 @@ const Home = ({
 
   return (
     <View>
+      <HeaderHome />
       <Text>HOME</Text>
       <TouchableHighlight onPress={handleLogout}>
         <Text>SAIR</Text>

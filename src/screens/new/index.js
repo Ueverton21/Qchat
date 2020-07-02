@@ -13,6 +13,7 @@ import ImagePicker from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
 import b64 from 'base-64';
 
 import styles from '../styles';
@@ -24,7 +25,8 @@ import uploadImage from '../../repository/StoreServices';
 import {
   modifyEmail, 
   modifyPassword, 
-  modifyName} from '../../store/actions/user';
+  modifyName,
+  loginSucess} from '../../store/actions/user';
 
 import getError from '../../utils/firebaseErroAuth';
 
@@ -35,6 +37,7 @@ const New = ({
   modifyName,
   modifyEmail,
   modifyPassword,
+  loginSucess
 }) => {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState();
@@ -76,6 +79,10 @@ const New = ({
       firebase.auth().createUserWithEmailAndPassword(email,password)
         .then(user => {
           const email64 = b64.encode(email);
+          firebase.database().ref(`users/${email64}`).set({
+            name: name,
+            descricao: ''
+          }).then(()=>{});
           if(avatar){
             uploadImage(avatar.uri, email64);
           }
@@ -160,6 +167,7 @@ const mapDispatchToProps = dispatch => ({
   modifyName: (name) => dispatch(modifyName(name)),
   modifyEmail: (email) => dispatch(modifyEmail(email)),
   modifyPassword: (password) => dispatch(modifyPassword(password)),
+  loginSucess: () => dispatch(loginSucess())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(New);
