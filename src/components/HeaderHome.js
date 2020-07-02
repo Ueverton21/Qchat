@@ -4,18 +4,23 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image
+  Image,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HeaderHome = () => {
   return (
     <View style={styles.main}>
-      <Text style={styles.title}>Conversas</Text>
+      <Text style={styles.title}>CONVERSAS</Text>
       <TouchableOpacity style={styles.btnPerfil}>
         <Image 
           style={styles.imgPerfil}
           source={{uri: 'https://www.dcrc.co/wp-content/uploads/2019/04/blank-head-profile-pic-for-a-man.jpg'}}
         />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btnNovaConversa}>
+        <Icon name="comment-dots" size={20}/>
       </TouchableOpacity>
     </View>
   );
@@ -35,7 +40,6 @@ const styles = new StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   btnPerfil: {
     justifyContent: 'center',
@@ -49,6 +53,12 @@ const styles = new StyleSheet.create({
     height: 24,
     width: 24,
     borderRadius: 12
+  },
+  btnNovaConversa: {
+    height: 28,
+    width: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 
