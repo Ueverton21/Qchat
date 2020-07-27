@@ -35,6 +35,7 @@ const Login = ({
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
+        modifyEmail(user.email);
         loginSucess();
         navigation.navigate('Home');
       }

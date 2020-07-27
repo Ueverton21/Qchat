@@ -7,13 +7,21 @@ const Stack = createStackNavigator();
 import Login from './screens/login';
 import New from './screens/new';
 import Home from './screens/home';
+import Contatos from './screens/contatos';
+import NovoContato from './screens/novoContato';
+import Conversa from './screens/conversa';
 
 const Routes = ({isSigned}) => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {isSigned ?
-          <Stack.Screen component={Home} name='Home' options={{header: () => null}}/>
+          <>
+            <Stack.Screen component={Home} name='Home' options={{header: () => null}}/>
+            <Stack.Screen component={Contatos} name='Contatos' options={{header: () => null}}/>
+            <Stack.Screen component={NovoContato} name='NovoContato' options={{header: () => null}}/>
+            <Stack.Screen component={Conversa} name='Conversa' options={{header: () => null}}/>
+          </>
           :
           (
             <>
@@ -22,8 +30,6 @@ const Routes = ({isSigned}) => {
             </>
           )
         }
-        
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

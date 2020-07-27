@@ -52,7 +52,6 @@ const New = ({
   };
 
   function uploadImageCalback(data){
-    console.log(data);
     if (data.didCancel) {
       return;
     }

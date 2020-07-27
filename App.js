@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import {YellowBox} from 'react-native';
 import React from 'react';
 import {Provider} from 'react-redux';
 import Routes from './src/routes';
@@ -20,6 +21,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const App = () => {
+  YellowBox.ignoreWarnings(['Setting a timer']);
   return (
   <Provider store={store}>
     <Routes />

@@ -48,7 +48,7 @@ const HeaderHome = ({
 
 const styles = new StyleSheet.create({
   main: {
-    height: 60,
+    height: 50,
     backgroundColor: '#133B23',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -58,7 +58,7 @@ const styles = new StyleSheet.create({
   },
   title: {
     color: '#FFF',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   contentRight: {
@@ -67,14 +67,14 @@ const styles = new StyleSheet.create({
   btnPerfil: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 32,
+    width: 32,
+    borderRadius: 16,
   },
   imgPerfil: {
-    height: 40,
-    width: 40,
-    borderRadius: 20
+    height: 32,
+    width: 32,
+    borderRadius: 16
   },
 })
 
